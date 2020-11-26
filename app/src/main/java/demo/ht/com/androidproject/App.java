@@ -12,20 +12,22 @@ public class App extends Application {
 
     private FlutterEngine fe;
 
+   public static String  ENG_INED ="engined";
     @Override
     public void onCreate() {
         super.onCreate();
         //Flutter引擎
         fe = new FlutterEngine(this);
+
         /**
          * 设置要缓存的页面
          */
-        fe.getNavigationChannel().setInitialRoute("image_page");
+//        fe.getNavigationChannel().setInitialRoute("text_page");
         //通过engine_id唯一标识来缓存
         fe.getDartExecutor().executeDartEntrypoint(DartExecutor.DartEntrypoint.createDefault());
         FlutterEngineCache
                 .getInstance()
-                .put("a", fe);
+                .put(ENG_INED, fe);
 
     }
 

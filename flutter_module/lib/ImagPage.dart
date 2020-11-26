@@ -2,18 +2,14 @@ import 'package:flutter/material.dart';
 
 import 'dart:ui';
 class ImagePage extends StatefulWidget {
-  String _title;
 
-  ImagePage(this._title);
+  ImagePage();
 
   @override
-  _ImagePageState createState() => _ImagePageState(_title);
+  _ImagePageState createState() => _ImagePageState();
 }
 
 class _ImagePageState extends State<ImagePage> {
-  String title;
-
-  _ImagePageState(this.title);
 
   @override
   Widget build(BuildContext context) {
