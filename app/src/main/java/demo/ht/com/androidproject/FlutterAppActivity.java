@@ -65,10 +65,10 @@ public class FlutterAppActivity extends FlutterActivity  implements IShowMessage
 
 //         使用在MyApplication预先初始化好的Flutter引擎以提升Flutter页面打开速度，
 //         注意：在这种模式下会导致getInitialRoute 不被调用所以无法设置初始化参数
-//        @Override
-//        public String getCachedEngineId() {
-//            return App.ENG_INED;
-//        }
+        @Override
+        public String getCachedEngineId() {
+            return App.ENG_INED;
+        }
 
 
     @Override
