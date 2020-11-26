@@ -21,7 +21,7 @@ public class ToFlutterDataActivity extends AppCompatActivity {
         findViewById(R.id.button).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                FlutterAppActivity.start(ToFlutterDataActivity.this,edit.getText().toString());
+                FlutterAppActivity.start(ToFlutterDataActivity.this,edit.getText().toString(),0);
             }
         });
     }

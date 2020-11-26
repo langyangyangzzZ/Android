@@ -1,6 +1,15 @@
 package demo.ht.com.androidproject;
 
 public interface IShowMessage {
+    /**
+     *
+     * @param message Flutter -> Android
+     */
     void onShowMessage(String message);
-    void sendMessage(String message,boolean useEventChannel);
+
+    /**
+     *
+     * @param message Android --> flutter
+     */
+    void sendMessage(String message);
 }

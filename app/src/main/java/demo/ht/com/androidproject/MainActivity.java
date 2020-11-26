@@ -18,7 +18,6 @@ import io.flutter.embedding.android.FlutterFragment;
 
 public class MainActivity extends AppCompatActivity {
     public final static String INIT_PARAMS = "initParams";
-    BasicMessageChannelPlugin basicMessageChannelPlugin;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+      //  使用BasicMessageChannel互传消息
         findViewById(R.id.bt3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
