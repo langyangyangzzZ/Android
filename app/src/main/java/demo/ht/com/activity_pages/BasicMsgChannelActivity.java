@@ -1,17 +1,10 @@
 package demo.ht.com.activity_pages;
 
 import androidx.appcompat.app.AppCompatActivity;
-import demo.ht.com.androidproject.BasicMessageChannelPlugin;
 import demo.ht.com.androidproject.FlutterAppActivity;
-import demo.ht.com.androidproject.IShowMessage;
 import demo.ht.com.androidproject.R;
-import io.flutter.embedding.android.FlutterActivity;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 

@@ -1,19 +1,19 @@
-package demo.ht.com.androidproject;
+package demo.ht.com.plugins;
 
 import android.app.Activity;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
+import demo.ht.com.androidproject.IShowMessage;
 import io.flutter.Log;
 import io.flutter.plugin.common.BasicMessageChannel;
 import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.StringCodec;
 
 /**
-      szj 2020/11/26
-     CSDN博客:https://blog.csdn.net/weixin_44819566/
-     微信公众号:码上变有钱
+ *  szj 2020/11/26
+ *  CSDN博客:https://blog.csdn.net/weixin_44819566/
+ *  微信公众号:码上变有钱
+ *  BasicMessageChannelPlugin 用于Android与Flutter之间持续通信
  */
 public class BasicMessageChannelPlugin implements BasicMessageChannel.MessageHandler<String> {
     private final Activity activity;
@@ -47,6 +47,7 @@ public class BasicMessageChannelPlugin implements BasicMessageChannel.MessageHan
      * @param callback 来自Dart的反馈
      */
    public void send(String message, BasicMessageChannel.Reply<String> callback) {
+       Log.i("szjsend",message);
         messageChannel.send(message, callback);
     }
 

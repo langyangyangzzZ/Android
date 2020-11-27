@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import demo.ht.com.activity_pages.BasicMsgChannelActivity;
+import demo.ht.com.activity_pages.EventChannelActivity;
 import demo.ht.com.activity_pages.ToFlutterDataActivity;
 import demo.ht.com.activity_pages.ToFlutterPageActivity;
 import io.flutter.embedding.android.FlutterActivity;
@@ -45,11 +46,19 @@ public class MainActivity extends AppCompatActivity {
         });
 
 
-      //  使用BasicMessageChannel互传消息
+        //  使用BasicMessageChannel互传消息
         findViewById(R.id.bt3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this,BasicMsgChannelActivity.class));
+            }
+        });
+
+        //  使用BasicMessageChannel互传消息
+        findViewById(R.id.bt4).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, EventChannelActivity.class));
             }
         });
     }

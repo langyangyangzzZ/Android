@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_module/ImagPage.dart';
@@ -38,10 +40,15 @@ class _MyHomePageState extends State<MyHomePage> {
 
   _MyHomePageState(this.initParam);
 
+  /// BasicMessageChannel互相传递消息
   BasicMessageChannel<String> _basicMessageChannel =
       BasicMessageChannel('BasicMessageChannelPlugin', StringCodec());
 
-  String showMessage;
+  /// EventChannel接收Android发送来的电量
+  EventChannel _eventChannelPlugin = EventChannel("demo.ht.com.androidproject/EventChannelPlugin");
+
+  String _basicMessage; //用来接收BasicMsg消息
+  String _eventMessage; //用来接收EventMes电量
 
   @override
   void initState() {
@@ -50,12 +57,20 @@ class _MyHomePageState extends State<MyHomePage> {
         .setMessageHandler((String message) => Future<String>(() {
               setState(() {
                 //Android --> Flutter
-                showMessage = 'BasicMessageChannel:' + message;
+                _basicMessage = 'BasicMessageChannel:' + message;
               });
               return "BasicMessageChannel收到android的消息：" + message;
             }));
+
+    //使用Event来接收电量消息
+    _eventChannelPlugin.receiveBroadcastStream().listen((event) {
+      setState(() {
+        _eventMessage = event;
+      });
+    });
     super.initState();
   }
+
 
   void _onTextChange(value) async {
     String response;
@@ -64,7 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
      */
     response = await _basicMessageChannel.send(value);
     setState(() {
-      showMessage =  response ;
+      _basicMessage = response;
     });
   }
 
@@ -119,7 +134,8 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 30,
             ),
             Text("接收android初始化数据为: ${initParam}"),
-            Text("BasicMessageChannel接收android原生数据为: ${showMessage}"),
+            Text("BasicMessageChannel接收android原生数据为: $_basicMessage"),
+            Text("EventChannel接收Android电量为: $_eventMessage"),
           ],
         ),
       ),

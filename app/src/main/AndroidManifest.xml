@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
-        <activity android:name="demo.ht.com.activity_pages.BasicMsgChannelActivity"></activity>
+        <activity android:name="demo.ht.com.activity_pages.EventChannelActivity" />
+        <activity android:name="demo.ht.com.activity_pages.BasicMsgChannelActivity" />
         <activity android:name="demo.ht.com.activity_pages.ToFlutterPageActivity" />
         <activity android:name="demo.ht.com.activity_pages.ToFlutterDataActivity" />
         <activity android:name=".MainActivity">
@@ -20,7 +21,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".FlutterAppActivity" />
-        <activity android:name="io.flutter.embedding.android.FlutterActivity" />
+        <activity  android:name="io.flutter.embedding.android.FlutterActivity" />
     </application>
 
 </manifest>
