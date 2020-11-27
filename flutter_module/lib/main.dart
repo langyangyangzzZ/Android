@@ -45,10 +45,14 @@ class _MyHomePageState extends State<MyHomePage> {
       BasicMessageChannel('BasicMessageChannelPlugin', StringCodec());
 
   /// EventChannel接收Android发送来的电量
-  EventChannel _eventChannelPlugin = EventChannel("demo.ht.com.androidproject/EventChannelPlugin");
+  EventChannel _eventChannelPlugin =
+      EventChannel("demo.ht.com.androidproject/EventChannelPlugin");
+
+  MethodChannel _methodChannel = new MethodChannel("MethodChannelPlugin");
 
   String _basicMessage; //用来接收BasicMsg消息
   String _eventMessage; //用来接收EventMes电量
+  String _methodMessage; //用来获取当前给Android发送的MethodMessage数据
 
   @override
   void initState() {
@@ -70,7 +74,6 @@ class _MyHomePageState extends State<MyHomePage> {
     });
     super.initState();
   }
-
 
   void _onTextChange(value) async {
     String response;
@@ -126,7 +129,7 @@ class _MyHomePageState extends State<MyHomePage> {
             TextField(
               onChanged: _onTextChange,
               decoration: InputDecoration(
-                hintText: "请输入给原生发送的消息",
+                hintText: "使用BasicMessageChannel给原生发送的消息",
               ),
             ),
 
@@ -134,11 +137,27 @@ class _MyHomePageState extends State<MyHomePage> {
               height: 30,
             ),
             Text("接收android初始化数据为: ${initParam}"),
-            Text("BasicMessageChannel接收android原生数据为: $_basicMessage"),
-            Text("EventChannel接收Android电量为: $_eventMessage"),
+            Text("BasicMessageChannel接收数据为: $_basicMessage"),
+            Text("EventChannel接收数据为: $_eventMessage"),
+            TextField(
+              onChanged: _onMethodChannelTextChange,
+              decoration: InputDecoration(
+                hintText: "使用MethodChannel给原生发送的消息",
+              ),
+            ),
+            Text("MethodChannel接收数据为:$_methodMessage")
           ],
         ),
       ),
     );
+  }
+
+  void _onMethodChannelTextChange(String value) async {
+    var content = await _methodChannel.invokeMethod("send", value);
+    print("szjmethodChannel$content");
+
+    setState(() {
+      _methodMessage = content ?? "MethodMessage消息为空啦";
+    });
   }
 }

@@ -12,6 +12,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import demo.ht.com.activity_pages.BasicMsgChannelActivity;
 import demo.ht.com.activity_pages.EventChannelActivity;
+import demo.ht.com.activity_pages.MethodChannelActivity;
 import demo.ht.com.activity_pages.ToFlutterDataActivity;
 import demo.ht.com.activity_pages.ToFlutterPageActivity;
 import io.flutter.embedding.android.FlutterActivity;
@@ -54,11 +55,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        //  使用BasicMessageChannel互传消息
+        //  使用EventChannel使Android给Flutter发送消息
         findViewById(R.id.bt4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, EventChannelActivity.class));
+            }
+        });
+
+        //  使用MethodMessage接收Flutter发送的消息
+        findViewById(R.id.bt5).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, MethodChannelActivity.class));
             }
         });
     }

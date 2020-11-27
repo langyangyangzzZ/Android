@@ -13,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import demo.ht.com.plugins.BasicMessageChannelPlugin;
 import demo.ht.com.plugins.EventChannelPlugin;
+import demo.ht.com.plugins.MethodChannelPlugin;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.EventChannel;
@@ -27,6 +28,7 @@ public class FlutterAppActivity extends FlutterActivity implements IShowMessage 
      * 0 给Flutter传递初始化数据
      * 1 使用BasicMsgChannel传递数据
      * 2 使用EventChannel传递当前电量
+     * 3 使用MethodChannel获取数据
      */
     private static int mtype;
 
@@ -74,6 +76,8 @@ public class FlutterAppActivity extends FlutterActivity implements IShowMessage 
             //使用EventMessage传递当前电量  传递的是当前的flutterEngine 与 电量
             EventChannelPlugin.registerWith(flutterEngine.getDartExecutor(),
                     getIntent().getStringExtra(INIT_PARAMS));
+        }else if(mtype == 3){
+            MethodChannelPlugin.registerWith(flutterEngine.getDartExecutor(),this);
         }
 
     }
