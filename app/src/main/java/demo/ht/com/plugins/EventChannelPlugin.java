@@ -40,6 +40,4 @@ public class EventChannelPlugin implements EventChannel.StreamHandler {
     public void onCancel(Object o) {
     }
 
-
-
 }

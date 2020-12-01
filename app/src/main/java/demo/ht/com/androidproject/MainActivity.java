@@ -13,6 +13,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import demo.ht.com.activity_pages.BasicMsgChannelActivity;
 import demo.ht.com.activity_pages.EventChannelActivity;
 import demo.ht.com.activity_pages.MethodChannelActivity;
+import demo.ht.com.activity_pages.SnowActivity;
 import demo.ht.com.activity_pages.ToFlutterDataActivity;
 import demo.ht.com.activity_pages.ToFlutterPageActivity;
 import io.flutter.embedding.android.FlutterActivity;
@@ -68,6 +69,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, MethodChannelActivity.class));
+            }
+        });
+
+        findViewById(R.id.bt6).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, SnowActivity.class));
             }
         });
     }
