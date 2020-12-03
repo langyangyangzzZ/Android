@@ -42,6 +42,12 @@
         android:text="雪花页面"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
+    <Button
+        android:id="@+id/bt7"
+        android:textAllCaps="false"
+        android:text="贝塞尔曲线页面"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
 
 
 </LinearLayout>

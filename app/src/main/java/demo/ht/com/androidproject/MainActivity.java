@@ -11,6 +11,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import demo.ht.com.activity_pages.BasicMsgChannelActivity;
+import demo.ht.com.activity_pages.BezierCurveActivity;
 import demo.ht.com.activity_pages.EventChannelActivity;
 import demo.ht.com.activity_pages.MethodChannelActivity;
 import demo.ht.com.activity_pages.SnowActivity;
@@ -72,10 +73,24 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * 雪花页面
+         */
         findViewById(R.id.bt6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 startActivity(new Intent(MainActivity.this, SnowActivity.class));
+            }
+        });
+
+        /**
+         * 贝塞尔曲线
+         */
+        findViewById(R.id.bt7).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                startActivity(new Intent(MainActivity.this, BezierCurveActivity.class));
             }
         });
     }

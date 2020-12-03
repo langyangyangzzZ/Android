@@ -6,6 +6,7 @@ import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.util.AttributeSet;
 import android.util.DisplayMetrics;
 import android.view.View;
@@ -19,10 +20,18 @@ import androidx.annotation.Nullable;
 import static android.animation.ValueAnimator.INFINITE;
 import static android.animation.ValueAnimator.RESTART;
 
+/**
+ * szj2020/12/1
+ * 微信公众号 码上变有钱
+ * CSDN博客地址:https://blog.csdn.net/weixin_44819566
+ * 微信号:ohhzzZ
+ */
+
 public class SnowFlakeView extends View {
 
     private int height;//屏幕高
     private int width;//屏幕宽
+    Path path = new Path();
 
     public SnowFlakeView(Context context) {
         this(context, null);
@@ -34,9 +43,10 @@ public class SnowFlakeView extends View {
 
     Paint paint = new Paint();
     List<SnowBean> mList = new ArrayList<SnowBean>();
+    private int[] colors = {Color.CYAN, Color.YELLOW, Color.BLACK, Color.LTGRAY, Color.GREEN, Color.RED};
 
+    Random mRandom = new Random();
 
-   Random mRandom =  new Random();
     public SnowFlakeView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
@@ -57,28 +67,29 @@ public class SnowFlakeView extends View {
 
     //初始化雪花
     private void initData() {
-       new  Thread(new Runnable() {
-           @Override
-           public void run() {
-               for (int i = 0; i < 300; i++) {
-                   SnowBean snowBean = new SnowBean();
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                for (int i = 0; i < 10; i++) {
+                    SnowBean snowBean = new SnowBean();
 
-                   //随机起始位置  mRandom.nextDouble()取值为0-1
-                   snowBean.setPosition(new SnowBean.Position(mRandom.nextDouble() * width, mRandom.nextDouble() * height));
+                    //随机起始位置  mRandom.nextDouble()取值为0-1
+                    snowBean.setPosition(new SnowBean.Position(mRandom.nextDouble() * width, mRandom.nextDouble() * height));
 
-                   //随机偏移幅度   mRandom.nextDouble()取值为0-1
-                   snowBean.setDeviation(mRandom.nextDouble() + 2);
+                    //随机偏移幅度   mRandom.nextDouble()取值为0-1
+                    snowBean.setDeviation(mRandom.nextDouble() + 2);
 
-                   //随机雪花大小  mRandom.nextDouble()取值为0-1  得到5-10之间的公式: mRandom.nextInt(MAX - MIN + 1) + MIN;
-                   snowBean.setSize(mRandom.nextInt(10 - 5 + 1) + 5);
+                    //随机雪花大小  mRandom.nextDouble()取值为0-1  得到5-10之间的公式: mRandom.nextInt(MAX - MIN + 1) + MIN;
+                    snowBean.setSize(mRandom.nextInt(10 - 5 + 1) + 5);
 
-                   //随机运行速度  随机得到5-10之间的数   得到5-10之间的公式: mRandom.nextInt(MAX - MIN + 1) + MIN;
-                   snowBean.setSpeed(mRandom.nextInt(10 - 5 + 1) + 5);
+                    //随机运行速度  随机得到5-10之间的数   得到5-10之间的公式: mRandom.nextInt(MAX - MIN + 1) + MIN;
+                    snowBean.setSpeed(mRandom.nextInt(10 - 5 + 1) + 5);
 
-                   mList.add(snowBean);
-               }
-           }
-       }).start();
+
+                    mList.add(snowBean);
+                }
+            }
+        }).start();
     }
 
 
@@ -88,7 +99,28 @@ public class SnowFlakeView extends View {
         //循环绘制雪花!
         for (int i = 0; i < mList.size(); i++) {
             SnowBean snowBean = mList.get(i);
-            canvas.drawCircle((float) snowBean.position.x, (float) snowBean.position.y, (float) snowBean.size, paint);
+            //雪花 start===
+//            canvas.drawCircle((float) snowBean.position.x, (float) snowBean.position.y, (float) snowBean.size, paint);
+            //雪花 stop====
+
+            //爱心  start---------------------
+            // 重置画板
+            path.reset();
+            // 得到屏幕的长宽的一半
+            // 路径的起始点
+            path.moveTo((float) snowBean.position.x, (float) (snowBean.position.x - 5 * snowBean.size));
+            // 根据心形函数画图
+            for (double j = 0; j <= 2 * Math.PI; j += 0.001) {
+                float x = (float) (16 * Math.sin(j) * Math.sin(j) * Math.sin(j));
+                float y = (float) (13 * Math.cos(j) - 5 * Math.cos(2 * j) - 2 * Math.cos(3 * j) - Math.cos(4 * j));
+                x *= snowBean.size;
+                y *= snowBean.size;
+                x = (float) snowBean.position.x - x;
+                y = (float) snowBean.position.y - y;
+                path.lineTo(x, y);
+            }
+            canvas.drawPath(path, paint);
+        //爱心  stop---------------------
         }
     }
 
@@ -114,7 +146,7 @@ public class SnowFlakeView extends View {
         for (int i = 0; i < mList.size(); i++) {
             SnowBean snowBean = mList.get(i);
             //重新绘制雪花, 新雪花x = 旧的雪花x + 随机偏移度数
-            snowBean.position.x = snowBean.position.x +  snowBean.deviation;
+            snowBean.position.x = snowBean.position.x + snowBean.deviation;
             //新的雪花y = 旧的雪花y + 雪花下降速度speed + 随机运行速度
             snowBean.position.y = snowBean.position.y + snowBean.getSpeed();
 
@@ -136,7 +168,7 @@ public class SnowFlakeView extends View {
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         int widthmeasure = measure(widthMeasureSpec);
         int heightmeasure = measure(heightMeasureSpec);
-        setMeasuredDimension(widthmeasure,heightmeasure);
+        setMeasuredDimension(widthmeasure, heightmeasure);
     }
 
     private int measure(int measureSpec) {
@@ -159,16 +191,17 @@ public class SnowFlakeView extends View {
 class SnowBean {
 
     //坐标
-    Position position = new Position(100,100);
+    Position position = new Position(100, 100);
 
     //偏移幅度
     double deviation;
 
     //大小
-    double size = 50;
+    double size = 5;
 
     //运行速度 dp/s
     double speed = 10;
+
 
     public double getSpeed() {
         return speed;
@@ -189,7 +222,7 @@ class SnowBean {
     public SnowBean() {
     }
 
-    public SnowBean(Position position, double deviation,double size) {
+    public SnowBean(Position position, double deviation, double size) {
         this.position = position;
         this.deviation = deviation;
         this.size = size;
