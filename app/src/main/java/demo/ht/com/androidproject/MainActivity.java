@@ -19,6 +19,7 @@ import demo.ht.com.activity_pages.MethodChannelActivity;
 import demo.ht.com.activity_pages.SnowActivity;
 import demo.ht.com.activity_pages.ToFlutterDataActivity;
 import demo.ht.com.activity_pages.ToFlutterPageActivity;
+import demo.ht.com.activity_pages.WaveActivity;
 import io.flutter.embedding.android.FlutterActivity;
 import io.flutter.embedding.android.FlutterFragment;
 
@@ -95,10 +96,23 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        /**
+         * 爱心
+         */
         findViewById(R.id.bt8).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 start(LoveActivity.class);
+            }
+        });
+
+        /**
+         * 贝塞尔波浪效果
+         */
+        findViewById(R.id.bt9).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                start(WaveActivity.class);
             }
         });
     }

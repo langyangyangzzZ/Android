@@ -9,7 +9,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AndroidProject">
-        <activity android:name="demo.ht.com.activity_pages.LoveActivity"></activity>
+        <activity android:name="demo.ht.com.activity_pages.WaveActivity"></activity>
+        <activity android:name="demo.ht.com.activity_pages.LoveActivity" />
         <activity android:name="demo.ht.com.activity_pages.BezierCurveActivity" />
         <activity android:name="demo.ht.com.activity_pages.SnowActivity" />
         <activity android:name="demo.ht.com.activity_pages.MethodChannelActivity" />
