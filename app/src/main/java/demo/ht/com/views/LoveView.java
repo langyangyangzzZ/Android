@@ -17,6 +17,7 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.View;
+import android.widget.Button;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -29,16 +30,18 @@ import static android.animation.ValueAnimator.RESTART;
 
 public class LoveView extends View {
 
-    private int[] colors = {Color.CYAN, Color.YELLOW, Color.WHITE, Color.LTGRAY, Color.GREEN, Color.RED};
+    private final int[] colors = {Color.CYAN, Color.YELLOW,  Color.LTGRAY, Color.GREEN, Color.RED};
     public Random random = new Random();
-    //心形半径
-    private float rate = 5;
     Path path = new Path();
     private Paint paint = new Paint();
     List<LoveBean> mList = new ArrayList<>();
     private int width;//屏幕宽
     private int height;//屏幕高
     private ValueAnimator valueAnimator;
+    private boolean isAnimation  = false;//是否添加动画
+    private float x;
+    private float y;
+    private int animatedValue;
 
     public LoveView(Context context) {
         this(context, null);
@@ -60,9 +63,19 @@ public class LoveView extends View {
         height = dm.heightPixels;
 
         //初始化爱心
-        initData(-100, -100);
+        initData(300,300);
 
 
+    }
+
+
+    public void addAnimation(View bt){
+        //重新初始化Love和现在的位置
+        initData(bt.getX()+bt.getMeasuredWidth() / 2, bt.getY()  - bt.getMeasuredHeight() / 2 );
+        //重新初始化Love动画
+        initLove();
+        //重新绘制
+        invalidate();
     }
 
     /**
@@ -72,18 +85,24 @@ public class LoveView extends View {
      */
     private void initData(float x, float y) {
         mList.clear();
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < LoveBean.number; i++) {
             LoveBean loveBean = new LoveBean();
             //设置随颜色
-            loveBean.color.add(colors[random.nextInt(colors.length)]);
+            loveBean.color = colors[random.nextInt(colors.length)];
 
-            //爱心的偏移位置
-            loveBean.deviation.x = (float) (random.nextDouble() + 2);
-            loveBean.deviation.y = random.nextInt(10);
+            /**
+             * 爱心的偏移位置
+             * random.nextDouble()随机的是0-1之间的小数
+             * random.nextInt(10 - 5 + 1) + 5; 随机的是5-10之间的整数
+             */
+            loveBean.deviation.x = (float) (random.nextDouble() );
+            loveBean.deviation.y = random.nextInt(7 - 5 + 1) + 5;
 
             //现在的位置 = 手指点击的位置 + 偏移的位置  (偏移的位置是为了有一种参差不齐的感觉!)
-            loveBean.pointF.x = x + loveBean.deviation.x;
-            loveBean.pointF.y = y + loveBean.deviation.y;
+            loveBean.pointF.x = x + loveBean.deviation.x ;
+            loveBean.pointF.y = y + loveBean.deviation.y ;
+
+            loveBean.alpha = 255;
 
             mList.add(loveBean);
         }
@@ -95,15 +114,12 @@ public class LoveView extends View {
         int widthmeasure = measure(widthMeasureSpec);
         int heightmeasure = measure(heightMeasureSpec);
         setMeasuredDimension(widthmeasure, heightmeasure);
-        Log.i("szjwidth2", "");
     }
 
     private int measure(int measureSpec) {
         int result = 0;
-
         int specMode = MeasureSpec.getMode(measureSpec);
         int specSize = MeasureSpec.getSize(measureSpec);
-
         if (specMode == MeasureSpec.UNSPECIFIED) {
             result = 200;
         } else {
@@ -115,37 +131,34 @@ public class LoveView extends View {
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         //循环绘制爱心
         for (int j = 0; j < mList.size(); j++) {
-
             LoveBean loveBean = mList.get(j);
-
-//            canvas.drawCircle(loveBean.pointF.x,loveBean.pointF.y,30,paint);
-
-
+            //设置颜色
+            paint.setColor(loveBean.color);
             // 重置画板
             path.reset();
             // 得到屏幕的长宽的一半
             // 路径的起始点
-            path.moveTo(loveBean.pointF.x, loveBean.pointF.y - 5 * rate);
+            Log.i("szjonDraw",loveBean.pointF.x+"\t"+(loveBean.pointF.y - 5 * LoveBean.radius));
+            path.moveTo(loveBean.pointF.x, loveBean.pointF.y - 5 * LoveBean.radius);
             // 根据心形函数画图
             for (double i = 0; i <= 2 * Math.PI; i += 0.001) {
                 float x = (float) (16 * Math.sin(i) * Math.sin(i) * Math.sin(i));
                 float y = (float) (13 * Math.cos(i) - 5 * Math.cos(2 * i) - 2 * Math.cos(3 * i) - Math.cos(4 * i));
-                x *= rate;
-                y *= rate;
+                x *= LoveBean.radius;
+                y *= LoveBean.radius;
                 x = loveBean.pointF.x - x;
                 y = loveBean.pointF.y - y;
                 path.lineTo(x, y);
             }
+            //设置透明度
+            paint.setAlpha(loveBean.alpha);
             canvas.drawPath(path, paint);
         }
     }
 
     private void initLove() {
-        paint.setAlpha(255);
-        isImplement = false;
         if (valueAnimator != null) {
             //移除上一个valueAnimator
             valueAnimator.removeAllUpdateListeners();
@@ -155,55 +168,66 @@ public class LoveView extends View {
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator animation) {
-                int animatedValue = (int) animation.getAnimatedValue();
+                animatedValue = (int) animation.getAnimatedValue();
                 //设置向上移动
                 initAnimator();
                 //设置透明度
-                paint.setAlpha(animatedValue);
+                for (int i = 0; i < mList.size(); i++) {
+                    mList.get(i).alpha = animatedValue;
+                }
 
             }
         });
         valueAnimator.setDuration(2000);
         valueAnimator.start();
-
     }
 
+    @Override
+    public void clearAnimation() {
+        super.clearAnimation();
+        valueAnimator.removeAllUpdateListeners();
+    }
+
+    //向上移动动画
     private void initAnimator() {
         for (int i = 0; i < mList.size(); i++) {
             LoveBean loveBean = mList.get(i);
 
-            for (int j = 0; j < loveBean.color.size(); j++) {
-                Log.i("szjloveBeancolor", loveBean.color.get(j) + "");
-
-                paint.setColor(loveBean.color.get(j));
-
-            }
-
+            //新的移动位置 = 当前位置 + 偏移位置
+            //因为是向上移动,所以Y是-去偏移位置
             float dx = loveBean.pointF.x + loveBean.deviation.x;
             float dy = loveBean.pointF.y - loveBean.deviation.y;
             loveBean.pointF = new PointF(dx, dy);
-
         }
         invalidate();
-
     }
 
-    Boolean isImplement = true;//是否执行完动画
 
+    @SuppressLint("ClickableViewAccessibility")
     @Override
     public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                //重新初始化Love和现在的位置
-                initData(event.getX(), event.getY());
-                //重新初始化Love动画
-                initLove();
-                //重新绘制
-                invalidate();
-
-                break;
+        if (event.getAction() == MotionEvent.ACTION_DOWN) {
+            x = event.getX();
+            y = event.getY();
         }
         return true;
+    }
+
+
+    /**
+     *
+     * @param number 设置红心数量
+     */
+    public void  setLoveNumber(int number){
+        LoveBean.number = number;
+    }
+
+    /**
+     *
+     * @param radius 设置红心半径
+     */
+    public void  setLoveRadius(int radius){
+        LoveBean.radius = radius;
     }
 }
 
@@ -214,5 +238,11 @@ class LoveBean {
     //爱心的偏移位置
     PointF deviation = new PointF();
     //爱心的颜色
-    ArrayList<Integer> color = new ArrayList<>();
+   int color ;
+    //透明度
+    int alpha;
+    //红心个数 默认初始化5个
+     public static int number = 5;
+     //红心半径
+    public static int  radius = 5;
 }

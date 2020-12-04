@@ -1,6 +1,7 @@
 package demo.ht.com.androidproject;
 
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
@@ -13,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import demo.ht.com.activity_pages.BasicMsgChannelActivity;
 import demo.ht.com.activity_pages.BezierCurveActivity;
 import demo.ht.com.activity_pages.EventChannelActivity;
+import demo.ht.com.activity_pages.LoveActivity;
 import demo.ht.com.activity_pages.MethodChannelActivity;
 import demo.ht.com.activity_pages.SnowActivity;
 import demo.ht.com.activity_pages.ToFlutterDataActivity;
@@ -34,7 +36,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt1).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ToFlutterPageActivity.class));
+                start(ToFlutterPageActivity.class);
             }
         });
 
@@ -44,7 +46,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt2).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, ToFlutterDataActivity.class));
+                start(ToFlutterDataActivity.class);
             }
         });
 
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt3).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this,BasicMsgChannelActivity.class));
+                start(BasicMsgChannelActivity.class);
             }
         });
 
@@ -61,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt4).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, EventChannelActivity.class));
+                start(EventChannelActivity.class);
             }
         });
 
@@ -69,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt5).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, MethodChannelActivity.class));
+                start(MethodChannelActivity.class);
             }
         });
 
@@ -79,7 +81,7 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt6).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, SnowActivity.class));
+                start(SnowActivity.class);
             }
         });
 
@@ -89,10 +91,20 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.bt7).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                startActivity(new Intent(MainActivity.this, BezierCurveActivity.class));
+                start(BezierCurveActivity.class);
             }
         });
+
+        findViewById(R.id.bt8).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                start(LoveActivity.class);
+            }
+        });
+    }
+
+    private void start(Class<?> loveActivityClass) {
+        startActivity(new Intent(this, loveActivityClass));
     }
 
 }
