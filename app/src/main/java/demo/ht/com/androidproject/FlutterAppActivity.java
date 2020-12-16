@@ -15,6 +15,10 @@ import demo.ht.com.plugins.BasicMessageChannelPlugin;
 import demo.ht.com.plugins.EventChannelPlugin;
 import demo.ht.com.plugins.MethodChannelPlugin;
 import io.flutter.embedding.android.FlutterActivity;
+import io.flutter.embedding.android.FlutterImageView;
+import io.flutter.embedding.android.FlutterView;
+import io.flutter.embedding.android.RenderMode;
+import io.flutter.embedding.android.TransparencyMode;
 import io.flutter.embedding.engine.FlutterEngine;
 import io.flutter.plugin.common.EventChannel;
 import io.flutter.plugin.common.MethodCall;
@@ -29,6 +33,7 @@ public class FlutterAppActivity extends FlutterActivity implements IShowMessage 
      * 1 使用BasicMsgChannel传递数据
      * 2 使用EventChannel传递当前电量
      * 3 使用MethodChannel获取数据
+     * 4 单纯跳转Flutter页面
      */
     private static int mtype;
 
@@ -44,6 +49,7 @@ public class FlutterAppActivity extends FlutterActivity implements IShowMessage 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
 
     }
 
@@ -78,19 +84,22 @@ public class FlutterAppActivity extends FlutterActivity implements IShowMessage 
                     getIntent().getStringExtra(INIT_PARAMS));
         }else if(mtype == 3){
             MethodChannelPlugin.registerWith(flutterEngine.getDartExecutor(),this);
+        } else if ( mtype == 4 ) {
+            //单纯跳转Flutter页面 过渡动画
+            // 给Flutter传递初始化数据
+            mInitParam = getIntent().getStringExtra(INIT_PARAMS);
+            overridePendingTransition(R.anim.pageup_enter,R.anim.pageup_exit);
         }
-
     }
 
 
     /**
      * 传递初始化参数给Flutter
-     *
-     * @return
      */
     @NonNull
     @Override
     public String getInitialRoute() {
+        Log.i("szjgetInitialRoute",mInitParam+"");
         return mInitParam == null ? super.getInitialRoute() : mInitParam;
     }
 
@@ -121,5 +130,13 @@ public class FlutterAppActivity extends FlutterActivity implements IShowMessage 
         }
     }
 
+
+
+    @NonNull
+    @Override
+    public TransparencyMode getTransparencyMode() {
+        Log.i("szjmType",mtype+"");
+        return mtype == 4 ? TransparencyMode.transparent : super.getTransparencyMode();
+    }
 
 }
